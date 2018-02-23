@@ -1,7 +1,4 @@
-HelloWorldIntent say hello
-HelloWorldIntent say hello world
-HelloWorldIntent hello
-HelloWorldIntent say hi
-HelloWorldIntent say hi world
-HelloWorldIntent hi
-HelloWorldIntent how are you
+ProduktSucheIntent wo finde ich {artikel}
+ProduktSucheIntent wo liegt {artikel}
+ProduktSucheIntent wo gibt es {artikel}
+ProduktSucheIntent wo kann ich {artikel} finden

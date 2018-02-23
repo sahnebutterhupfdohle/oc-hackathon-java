@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.LaunchRequest;
+import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SessionEndedRequest;
 import com.amazon.speech.speechlet.SessionStartedRequest;
 import com.amazon.speech.speechlet.SpeechletV2;
@@ -56,14 +57,32 @@ public class HelloWorldSpeechlet implements SpeechletV2 {
 
         if ("HelloWorldIntent".equals(intentName)) {
             return getHelloResponse();
-        } else if ("AMAZON.HelpIntent".equals(intentName)) {
+        } else if ("ProduktSucheIntent".equals(intentName)) {
+           return getSucheResponse(intent,requestEnvelope.getSession());
+        }
+        else if ("AMAZON.HelpIntent".equals(intentName)) {
             return getHelpResponse();
         } else {
             return getAskResponse("HelloWorld", "This is unsupported.  Please try something else.");
         }
     }
 
-    @Override
+    private SpeechletResponse getSucheResponse(Intent intent,Session session) {
+    	System.out.println(intent.getSlot("artikel").getValue() + " Slot value");
+		if (intent.getSlot("artikel").getValue().equalsIgnoreCase("Schrauben")) {
+			return getAskResponse("HelloWorld", intent.getSlot("artikel").getValue() + " sind in Regal 42");
+		} else if (intent.getSlot("artikel").getValue().equalsIgnoreCase("Holz")) {
+			return getAskResponse("HelloWorld", intent.getSlot("artikel").getValue() + " ist in Regal 43");
+		} else if (intent.getSlot("artikel").getValue().equalsIgnoreCase("Farbe")) {
+			return getAskResponse("HelloWorld", intent.getSlot("artikel").getValue() + " ist in Regal 44");
+		} else if (intent.getSlot("artikel").getValue().equalsIgnoreCase("Tapeten")) {
+			return getAskResponse("HelloWorld", intent.getSlot("artikel").getValue() + " sind in Regal 45");
+		} else {
+			return getAskResponse("HelloWorld", "Entschuldigung! Dieser Artikel konnte nicht gefunden werden");
+		}
+	}
+
+	@Override
     public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
         log.info("onSessionEnded requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
                 requestEnvelope.getSession().getSessionId());
@@ -76,7 +95,7 @@ public class HelloWorldSpeechlet implements SpeechletV2 {
      * @return SpeechletResponse spoken and visual response for the given intent
      */
     private SpeechletResponse getWelcomeResponse() {
-        String speechText = "Welcome to the Alexa Skills Kit, you can say hello";
+        String speechText = "Willkommen im Baumarkt Stuttgart! Was suchen Sie?";
         return getAskResponse("HelloWorld", speechText);
     }
 
